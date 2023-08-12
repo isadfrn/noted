@@ -1,0 +1,22 @@
+{
+  "name": "noted-server",
+  "version": "0.1.0",
+  "description": "This is the server of noted app, an taking notes app straight to the point",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Isabella Nunes",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-banner": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
