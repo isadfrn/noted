@@ -4,7 +4,7 @@
   "description": "This is the server of noted app, an taking notes app straight to the point",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "dev": "nodemon src/server.js"
   },
   "keywords": [
     "node",
