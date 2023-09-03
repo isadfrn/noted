@@ -9,6 +9,7 @@ exports.up = (knex) =>
       .references("id")
       .inTable("notes")
       .onDelete("CASCADE");
+
     table.integer("user_id").references("id").inTable("users");
 
     table.timestamp("created_at").default(knex.fn.now());

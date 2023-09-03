@@ -1,6 +1,6 @@
 require("express-async-errors");
 
-const AppError = require("./utils/App.error");
+const AppError = require("./utils/AppError");
 const express = require("express");
 const showBanner = require("node-banner");
 const routes = require("./routes");
@@ -32,7 +32,7 @@ app.listen(port, async () => {
   await showBanner(
     "noted-server",
     `Server is running on: http://localhost:${port}`,
-    "blue",
-    "blue"
+    "green",
+    "green"
   );
 });
