@@ -30,7 +30,7 @@ class NotesController {
 
     await knex("tags").insert(tagsInsert);
 
-    response.status(201).json();
+    return response.status(201).json();
   }
 
   async show(request, response) {
@@ -42,11 +42,27 @@ class NotesController {
       .where({ note_id: id })
       .orderBy("created_at");
 
-    return response.json({
+    return response.status(200).json({
       ...note,
       tags,
       links,
     });
+  }
+
+  async delete(request, response) {
+    const { id } = request.params;
+
+    await knex("notes").where({ id }).delete();
+
+    return response.status(200).json();
+  }
+
+  async index(request, response) {
+    const { user_id } = request.query;
+
+    const notes = await knex("notes").where({ user_id }).orderBy("title");
+
+    return response.status(200).json(notes);
   }
 }
 
