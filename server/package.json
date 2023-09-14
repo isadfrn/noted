@@ -12,7 +12,7 @@
     "node",
     "express"
   ],
-  "author": "Isabella Nunes",
+  "author": "isadfrn",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
