@@ -5,43 +5,101 @@ import { Header } from "../../components/Header";
 import { Section } from "../../components/Section";
 import { Input } from "../../components/Input";
 import { ButtonText } from "../../components/ButtonText";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../services/api";
 
 export function Home() {
+  const [search, setSearch] = useState("");
+  const [tags, setTags] = useState([]);
+  const [tagsSelected, setTagsSelected] = useState([]);
+  const [notes, setNotes] = useState([]);
+
+  const navigate = useNavigate();
+
+  function handleTagSelected(tagName) {
+    if (tagName === "all") {
+      return setTagsSelected([]);
+    }
+
+    const alreadySelected = tagsSelected.includes(tagName);
+
+    if (alreadySelected) {
+      const filteredTags = tagsSelected.filter((tag) => tag !== tagName);
+      setTagsSelected(filteredTags);
+    } else {
+      setTagsSelected((prevState) => [...prevState, tagName]);
+    }
+  }
+
+  function handleDetails(id) {
+    navigate(`/details/${id}`);
+  }
+
+  useEffect(() => {
+    async function fetchTags() {
+      const response = await api.get("/tags");
+      setTags(response.data);
+    }
+
+    fetchTags();
+  }, []);
+
+  useEffect(() => {
+    async function fetchNotes() {
+      const response = await api.get(
+        `/notes?title=${search}&tags=${tagsSelected}`
+      );
+      setNotes(response.data);
+    }
+
+    fetchNotes();
+  }, [tagsSelected, search]);
+
   return (
     <Container>
       <Brand>
         <h1>Noted</h1>
       </Brand>
 
-      <Header></Header>
+      <Header />
 
       <Menu>
         <li>
-          <ButtonText title="All" $isactive />
+          <ButtonText
+            title="All"
+            onClick={() => handleTagSelected("all")}
+            isActive={tagsSelected.length === 0}
+          />
         </li>
-        <li>
-          <ButtonText title="React" />
-        </li>
-        <li>
-          <ButtonText title="Nodejs" />
-        </li>
+        {tags &&
+          tags.map((tag) => (
+            <li key={String(tag.id)}>
+              <ButtonText
+                title={tag.name}
+                onClick={() => handleTagSelected(tag.name)}
+                isActive={tagsSelected.includes(tag.name)}
+              />
+            </li>
+          ))}
       </Menu>
 
       <Search>
-        <Input placeholder="Search by title" />
+        <Input
+          placeholder="Search by title"
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </Search>
 
       <Content>
         <Section title="My notes">
-          <Note
-            data={{
-              title: "React",
-              tags: [
-                { id: "1", name: "react" },
-                { id: "2", name: "freecodecamp" },
-              ],
-            }}
-          />
+          {notes.map((note) => (
+            <Note
+              key={String(note.id)}
+              data={note}
+              onClick={() => handleDetails(note.id)}
+            />
+          ))}
         </Section>
       </Content>
 
