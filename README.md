@@ -6,7 +6,7 @@
 
 ## About
 
-An taking notes app straight to the point
+An taking notes app straight to the point.
 
 ## Run
 
